@@ -1,0 +1,63 @@
+# Environment variables (contains passwords)
+.env
+.env.local
+.env.*.local
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Docker volumes (local data)
+postgres_data/
+minio_data/
+grafana_data/
+
+# Logs
+*.log
+logs/
+*.out
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+.cache/
+
+# OS specific
+Thumbs.db
+.DS_Store
