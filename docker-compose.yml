@@ -121,6 +121,23 @@ services:
     networks:
       - crypto-network
 
+  # Binance Ingestion Service
+  ingestion:
+    build:
+      context: ./ingestion
+      dockerfile: Dockerfile
+    container_name: binance-ingestion
+    depends_on:
+      kafka:
+        condition: service_healthy
+    environment:
+      KAFKA_BROKER: kafka:9092
+      SYMBOLS: BTCUSDT,ETHUSDT,BNBUSDT
+      WHALE_THRESHOLD: 500000
+    networks:
+      - crypto-network
+    restart: unless-stopped
+
 networks:
   crypto-network:
     driver: bridge
