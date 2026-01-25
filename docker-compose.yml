@@ -139,8 +139,11 @@ services:
     restart: unless-stopped
 
 # Flink Job Manager (coordinates processing)
+  # Flink Job Manager (coordinates processing)
   flink-jobmanager:
-    image: flink:1.18-scala_2.12-java11
+    build:
+      context: .
+      dockerfile: docker/flink/Dockerfile
     container_name: flink-jobmanager
     ports:
       - "8081:8081"
@@ -157,7 +160,9 @@ services:
 
   # Flink Task Manager (does the actual work)
   flink-taskmanager:
-    image: flink:1.18-scala_2.12-java11
+    build:
+      context: .
+      dockerfile: docker/flink/Dockerfile
     container_name: flink-taskmanager
     depends_on:
       - flink-jobmanager
@@ -171,7 +176,23 @@ services:
     networks:
       - crypto-network
 
-
+# Flink Job Auto-Submit Service
+  flink-job-submitter:
+    image: docker:27-cli
+    container_name: flink-job-submitter
+    depends_on:
+      flink-jobmanager:
+        condition: service_started
+      kafka:
+        condition: service_healthy
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./docker/flink/submit-job.sh:/submit-job.sh
+      - ./flink-job/whale_detector.py:/whale_detector.py
+    command: sh /submit-job.sh
+    networks:
+      - crypto-network
+    restart: "no"
 
 networks:
   crypto-network:
